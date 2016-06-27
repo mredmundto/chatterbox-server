@@ -30,8 +30,20 @@ var requestHandler = function(request, response) {
   console.log('Serving request type ' + request.method + ' for url ' + request.url);
 
   // The outgoing status.
-  var statusCode = 200;
+  var statusCode;
 
+  if (request.url !== '/classes/messages') {
+    statusCode = 404;
+    response.writeHead(statusCode, headers);
+    response.end();
+    return;
+  }
+
+  if (request.method === 'POST') {
+    statusCode = 201;
+  } else if (request.method === 'GET') {
+    statusCode = 200;
+  }
   // See the note below about CORS headers.
   var headers = defaultCorsHeaders;
 
@@ -52,7 +64,7 @@ var requestHandler = function(request, response) {
   //
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
-  var obj = { message: 'helloworld'};
+  var obj = { results: [ { username: 'Jono', message: 'Do my bidding!' } ] };
   obj = JSON.stringify(obj);
 
   response.end(obj);
