@@ -63,9 +63,8 @@ var requestHandler = function(request, response) {
     });
     request.on('end', function() {
       // when data is complete, send back a new object
-      var object = querystring.parse(string);
-      // messages = JSON.parse(messages);
-      messages.results.push(object);
+      var object = JSON.parse(string);
+      messages.results.push(new Message(object.username, object.text));
       var copy = JSON.stringify(messages);
       // send object & return
       headers['Content-Type'] = 'application/json';

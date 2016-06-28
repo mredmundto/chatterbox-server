@@ -10,7 +10,7 @@ var app = {
   roomname: 'lobby',
   lastMessageId: 0,
   friends: {},
-
+/*
   init: function() {
    
     var fetch = function() {
@@ -44,9 +44,9 @@ var app = {
       }
     );
   }
+*/
 
 
-/*
   init: function() {
     // Get username
     app.username = window.location.search.substr(10);
@@ -79,8 +79,9 @@ var app = {
     $.ajax({
       url: app.server,
       type: 'POST',
+      crossDomain: true, 
       data: JSON.stringify(data),
-      contentType: 'application/json',
+      //contentType: 'application/json',
       success: function (data) {
         // Trigger a fetch to update the messages, pass true to animate
         app.fetch();
@@ -99,7 +100,7 @@ var app = {
       crossDomain: true,
       //data: { order: '-createdAt'},
       success: function(data) {
-        console.log(data);
+        //console.log(data);
         // Don't bother if we have nothing to work with
         if (!data.results || !data.results.length) { return; }
 
@@ -256,6 +257,7 @@ var app = {
       text: app.$message.val(),
       roomname: app.roomname || 'lobby'
     };
+    //console.log(message); 
 
     app.send(message);
 
@@ -273,6 +275,6 @@ var app = {
     $('form input[type=submit]').attr('disabled', null);
   
   }
-*/
+
 };
 
