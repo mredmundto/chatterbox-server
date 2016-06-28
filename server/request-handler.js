@@ -15,7 +15,7 @@ this file and include it in basic-server.js so that it actually works.
 **************************************************************/
 var messages = {
   results: [
-    { username: 'Jono', message: 'Do my bidding!' }
+    new Message ('Jono', 'Do my bidding!')
     //new Message('Jono', 'Do my bidding!')
   ]
 };
