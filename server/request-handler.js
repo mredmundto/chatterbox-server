@@ -64,20 +64,20 @@ var requestHandler = function(request, response) {
     request.on('end', function() {
       // when data is complete, send back a new object
       var object = querystring.parse(string);
-      messages = JSON.parse(messages);
+      // messages = JSON.parse(messages);
       messages.results.push(object);
+      var copy = JSON.stringify(messages);
       // send object & return
       headers['Content-Type'] = 'application/json';
       response.writeHead(201, headers);
       // stringify messages object before sending
-      messages = JSON.stringify(messages);
-      response.end(messages);
+      response.end(copy);
     });
   } else if (method === 'GET' || method === 'OPTIONS') {
     statusCode = 200;
-    messages = JSON.stringify(messages);
+    var copy = JSON.stringify(messages);
     response.writeHead(statusCode, headers);
-    response.end(messages);
+    response.end(copy);
   }
 
   // See the note below about CORS headers.
