@@ -1,4 +1,4 @@
-var Message = require('./message');
+var Message = require('./message.js');
 
 /*************************************************************
 
@@ -75,7 +75,7 @@ var requestHandler = function(request, response) {
   // node to actually send all the data over to the client.
   var obj = {
     results: [
-      // { username: 'Jono', message: 'Do my bidding!' }
+      //{ username: 'Jono', message: 'Do my bidding!' }
       new Message('Jono', 'Do my bidding!')
     ]
   };
