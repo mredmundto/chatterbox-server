@@ -1,5 +1,5 @@
 var Message = require('./message.js');
-
+var querystring = require('querystring');
 /*************************************************************
 
 You should implement your request handler function in this file.
@@ -13,6 +13,12 @@ this file and include it in basic-server.js so that it actually works.
 *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html.
 
 **************************************************************/
+var obj = {
+  results: [
+    { username: 'Jono', message: 'Do my bidding!' }
+    //new Message('Jono', 'Do my bidding!')
+  ]
+};
 
 var requestHandler = function(request, response) {
   // Request and Response come from node's http module.
@@ -45,10 +51,24 @@ var requestHandler = function(request, response) {
 
   if (method === 'POST') {
     statusCode = 201;
+    // console.log('POST', request);
+    request.on('data', function(data) {
+      // collect the data
+      var string = data.toString();
+      var object = querystring.parse(string);
+      obj = JSON.parse(obj);
+      obj.results.push(object);
+      console.log(obj);
+    });
+    // when data is complete, send back a new object
+    request.on('end', function() {
 
+
+      // send object & return
+    });
   } else if (method === 'GET' || method === 'OPTIONS') {
     statusCode = 200;
-    console.log(request);
+    // console.log(request);
   }
 
   // See the note below about CORS headers.
@@ -73,12 +93,6 @@ var requestHandler = function(request, response) {
   //
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
-  var obj = {
-    results: [
-      //{ username: 'Jono', message: 'Do my bidding!' }
-      new Message('Jono', 'Do my bidding!')
-    ]
-  };
   obj = JSON.stringify(obj);
 
   response.end(obj);

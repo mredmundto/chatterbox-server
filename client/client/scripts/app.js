@@ -3,6 +3,8 @@ var app = {
 
   //TODO: The current 'toggleFriend' function just toggles the class 'friend'
   //to all messages sent by the user
+  
+  //server: 'https://api.parse.com/1/classes/messages/',
   server: 'http://127.0.0.1:3000/classes/messages',
   username: 'anonymous',
   roomname: 'lobby',
@@ -10,23 +12,42 @@ var app = {
   friends: {},
 
   init: function() {
+   
+    var fetch = function() {
+      $.ajax(
+        app.server, {
+          type: 'GET',
+          crossDomain: true,
+          success: function(data) {
+            console.log(data.results);
+          },
+          error: function(data) {
+            console.log(data);
+          }
+        }
+      );
+    };
+    
+
     $.ajax(
       app.server, {
-        type: 'GET',
-        crossDomain: true,
+        type: 'POST', 
+        crossDomain: true, 
+        data: {username: "Rafael", text: "Lets make a commit!!!"}, 
         success: function(data) {
-          console.log(data);
-        },
+          //console.log(data.results);
+          fetch(); 
+        }, 
         error: function(data) {
-          console.log(data);
+          console.log(data); 
         }
       }
-    )
+    );
   }
 
 
 /*
-
+  init: function() {
     // Get username
     app.username = window.location.search.substr(10);
 
@@ -75,8 +96,10 @@ var app = {
       url: app.server,
       type: 'GET',
       contentType: 'application/json',
-      data: { order: '-createdAt'},
+      crossDomain: true,
+      //data: { order: '-createdAt'},
       success: function(data) {
+        console.log(data);
         // Don't bother if we have nothing to work with
         if (!data.results || !data.results.length) { return; }
 
@@ -250,6 +273,6 @@ var app = {
     $('form input[type=submit]').attr('disabled', null);
   
   }
-  */
+*/
 };
 
