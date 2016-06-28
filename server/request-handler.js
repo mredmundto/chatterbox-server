@@ -1,3 +1,5 @@
+var Message = require('./message');
+
 /*************************************************************
 
 You should implement your request handler function in this file.
@@ -39,12 +41,14 @@ var requestHandler = function(request, response) {
     return;
   }
 
-  var method = request.method
+  var method = request.method;
 
   if (method === 'POST') {
     statusCode = 201;
+
   } else if (method === 'GET' || method === 'OPTIONS') {
     statusCode = 200;
+    console.log(request);
   }
 
   // See the note below about CORS headers.
@@ -69,7 +73,12 @@ var requestHandler = function(request, response) {
   //
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
-  var obj = { results: [ { username: 'Jono', message: 'Do my bidding!' } ] };
+  var obj = {
+    results: [
+      // { username: 'Jono', message: 'Do my bidding!' }
+      new Message('Jono', 'Do my bidding!')
+    ]
+  };
   obj = JSON.stringify(obj);
 
   response.end(obj);
