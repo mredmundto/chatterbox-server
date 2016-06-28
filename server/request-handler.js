@@ -16,7 +16,6 @@ this file and include it in basic-server.js so that it actually works.
 var messages = {
   results: [
     new Message ('Jono', 'Do my bidding!')
-    //new Message('Jono', 'Do my bidding!')
   ]
 };
 
@@ -48,7 +47,6 @@ var requestHandler = function(request, response) {
   }
 
   // collect POST data in here
-  var string = '';
   var headers = defaultCorsHeaders;
   headers['Content-Type'] = 'application/json';
 
@@ -57,8 +55,12 @@ var requestHandler = function(request, response) {
   if (method === 'POST') {
     statusCode = 201;
 
+    var string = '';
     request.on('data', function(data) {
-       // collect the data
+      // collect the data
+      console.log(data.length, 'bytes'); 
+      console.log(data);
+      console.log(data.toJSON());
       string += data.toString();
     });
     request.on('end', function() {
@@ -67,8 +69,7 @@ var requestHandler = function(request, response) {
       messages.results.push(new Message(object.username, object.text));
       var copy = JSON.stringify(messages);
       // send object & return
-      headers['Content-Type'] = 'application/json';
-      response.writeHead(201, headers);
+      response.writeHead(statusCode, headers);
       // stringify messages object before sending
       response.end(copy);
     });
