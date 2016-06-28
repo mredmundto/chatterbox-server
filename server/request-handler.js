@@ -13,7 +13,7 @@ this file and include it in basic-server.js so that it actually works.
 *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html.
 
 **************************************************************/
-var obj = {
+var messages = {
   results: [
     { username: 'Jono', message: 'Do my bidding!' }
     //new Message('Jono', 'Do my bidding!')
@@ -47,43 +47,48 @@ var requestHandler = function(request, response) {
     return;
   }
 
+  // collect POST data in here
+  var string = '';
+  var headers = defaultCorsHeaders;
+  headers['Content-Type'] = 'application/json';
+
   var method = request.method;
 
   if (method === 'POST') {
     statusCode = 201;
-    // console.log('POST', request);
+
     request.on('data', function(data) {
-      // collect the data
-      var string = data.toString();
-      var object = querystring.parse(string);
-      obj = JSON.parse(obj);
-      obj.results.push(object);
-      console.log(obj);
+       // collect the data
+      string += data.toString();
     });
-    // when data is complete, send back a new object
     request.on('end', function() {
-
-
+      // when data is complete, send back a new object
+      var object = querystring.parse(string);
+      messages = JSON.parse(messages);
+      messages.results.push(object);
       // send object & return
+      headers['Content-Type'] = 'application/json';
+      response.writeHead(201, headers);
+      // stringify messages object before sending
+      messages = JSON.stringify(messages);
+      response.end(messages);
     });
   } else if (method === 'GET' || method === 'OPTIONS') {
     statusCode = 200;
-    // console.log(request);
+    messages = JSON.stringify(messages);
+    response.writeHead(statusCode, headers);
+    response.end(messages);
   }
 
   // See the note below about CORS headers.
-  var headers = defaultCorsHeaders;
 
   // Tell the client we are sending them plain text.
   //
   // You will need to change this if you are sending something
   // other than plain text, like JSON or HTML.
-  headers['Content-Type'] = 'application/json';
 
   // .writeHead() writes to the request line and headers of the response,
   // which includes the status and all headers.
-
-  response.writeHead(statusCode, headers);
 
 
   // Make sure to always call response.end() - Node may not send
@@ -93,9 +98,6 @@ var requestHandler = function(request, response) {
   //
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
-  obj = JSON.stringify(obj);
-
-  response.end(obj);
 };
 
 // These headers will allow Cross-Origin Resource Sharing (CORS).
