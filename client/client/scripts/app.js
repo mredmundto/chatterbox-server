@@ -3,13 +3,30 @@ var app = {
 
   //TODO: The current 'toggleFriend' function just toggles the class 'friend'
   //to all messages sent by the user
-  server: 'https://api.parse.com/1/classes/messages/',
+  server: 'http://127.0.0.1:3000/classes/messages',
   username: 'anonymous',
   roomname: 'lobby',
   lastMessageId: 0,
   friends: {},
 
   init: function() {
+    $.ajax(
+      app.server, {
+        type: 'GET',
+        crossDomain: true,
+        success: function(data) {
+          console.log(data);
+        },
+        error: function(data) {
+          console.log(data);
+        }
+      }
+    )
+  }
+
+
+/*
+
     // Get username
     app.username = window.location.search.substr(10);
 
@@ -231,6 +248,8 @@ var app = {
   stopSpinner: function() {
     $('.spinner img').fadeOut('fast');
     $('form input[type=submit]').attr('disabled', null);
+  
   }
+  */
 };
 

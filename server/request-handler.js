@@ -39,11 +39,14 @@ var requestHandler = function(request, response) {
     return;
   }
 
-  if (request.method === 'POST') {
+  var method = request.method
+
+  if (method === 'POST') {
     statusCode = 201;
-  } else if (request.method === 'GET') {
+  } else if (method === 'GET' || method === 'OPTIONS') {
     statusCode = 200;
   }
+
   // See the note below about CORS headers.
   var headers = defaultCorsHeaders;
 
@@ -55,7 +58,9 @@ var requestHandler = function(request, response) {
 
   // .writeHead() writes to the request line and headers of the response,
   // which includes the status and all headers.
+
   response.writeHead(statusCode, headers);
+
 
   // Make sure to always call response.end() - Node may not send
   // anything back to the client until you do. The string you pass to
@@ -82,7 +87,7 @@ var requestHandler = function(request, response) {
 var defaultCorsHeaders = {
   'access-control-allow-origin': '*',
   'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'access-control-allow-headers': 'content-type, accept',
+  'access-control-allow-headers': 'content-type, accept, X-Parse-Application-Id, X-Parse-REST-API-Key',
   'access-control-max-age': 10 // Seconds.
 };
 
