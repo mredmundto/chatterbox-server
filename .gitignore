@@ -38,3 +38,6 @@ node_modules
 
 ### PhPStorm ###
 .idea/
+
+### do not commit API keys ###
+client/client/env/config.js
