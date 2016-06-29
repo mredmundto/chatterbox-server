@@ -1,5 +1,6 @@
 var Message = require('./message.js');
 var querystring = require('querystring');
+
 /*************************************************************
 
 You should implement your request handler function in this file.
@@ -15,7 +16,9 @@ this file and include it in basic-server.js so that it actually works.
 **************************************************************/
 var messages = {
   results: [
-    new Message ('Jono', 'Do my bidding!')
+    new Message ('Rafael', 'Hello, welcome to the chatterbox'),
+    new Message ('Edmund', 'It\'s all good'),
+
   ]
 };
 
@@ -66,7 +69,7 @@ var requestHandler = function(request, response) {
     request.on('end', function() {
       // when data is complete, send back a new object
       var object = JSON.parse(string);
-      messages.results.push(new Message(object.username, object.text));
+      messages.results.push(new Message(object.username, object.text, object.roomname));
       var copy = JSON.stringify(messages);
       // send object & return
       response.writeHead(statusCode, headers);
