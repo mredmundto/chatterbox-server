@@ -18,7 +18,6 @@ var messages = {
   results: [
     new Message ('Rafael', 'Hello, welcome to the chatterbox'),
     new Message ('Edmund', 'It\'s all good'),
-
   ]
 };
 
@@ -61,9 +60,6 @@ var requestHandler = function(request, response) {
     var string = '';
     request.on('data', function(data) {
       // collect the data
-      console.log(data.length, 'bytes'); 
-      console.log(data);
-      console.log(data.toJSON());
       string += data.toString();
     });
     request.on('end', function() {
